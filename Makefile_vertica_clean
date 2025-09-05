@@ -1,0 +1,24 @@
+# Makefile for Add2Ints example with Vertica.cpp (no symbol conflict)
+# Based on Vertica support recommendation
+
+SDK_HOME?=/opt/vertica/sdk
+
+CXX?=g++
+CXXFLAGS:=-I $(SDK_HOME)/include -g -Wall -Wno-unused-value -shared -fPIC -std=c++11
+CXXFLAGS+=-D_GLIBCXX_USE_CXX11_ABI=1
+
+SOURCE = Add2Ints_vertica_clean.cpp
+VERTICA_CPP = $(SDK_HOME)/include/Vertica.cpp
+TARGET = libAdd2Ints_vertica_clean.so
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCE)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SOURCE) $(VERTICA_CPP)
+	@echo "Built $(TARGET) with Vertica.cpp (no conflicts)"
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: all clean
+
